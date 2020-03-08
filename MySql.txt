@@ -1,0 +1,33 @@
+//users table
+
+CREATE TABLE IF NOT EXISTS users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    online TINYINT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    socket TEXT,
+)  ENGINE=INNODB;
+insert into users(username,password,online) values("kumar","ankit",0);
+
+//connections table
+CREATE TABLE IF NOT EXISTS connections (
+    connection INT AUTO_INCREMENT PRIMARY KEY,
+    user_one INT,		(sender)
+    user_two INT,		(receiver)
+    status TINYINT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)  ENGINE=INNODB;
+insert into connections(user_one,user_two,status) values(1,2,0);
+
+//data table 
+CREATE TABLE IF NOT EXISTS data (
+    data_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_one INT,
+    user_two INT,
+    data TEXT NOT NULL,
+    status TINYINT NOT NULL,	(0 sent ,1 received)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)  ENGINE=INNODB;
+insert into data(user_one,user_two,data,status) values(1,2,"This is data from 1 to 2",0);
+

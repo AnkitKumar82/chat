@@ -1,0 +1,76 @@
+const express = require('express');
+const app = express();
+const con = require('./mysql.js');
+
+const ConnectionsService = require('./Service/Connections.js');
+const NewService = require('./Service/New.js');
+const LoginService = require('./Service/Login.js');
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+var cors = require('cors');
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+app.use(cors());
+io.origins('*:*') // for latest version
+app.use(express.urlencoded());
+// Parse JSON bodies (as sent by API clients)
+app.use(express.json());
+//app.use('/login', LoginRoutes);
+//app.use('/connections', ConnectionsRoutes);
+//app.use('/new',NewRoutes);
+
+app.post('/login',(req,res)=>{
+  const username = req.body.username;
+  const password = req.body.password;
+  const mySQLQuery = `select * from users where username='${username}' and password='${password}'`;
+  con.query(mySQLQuery,(err,result)=>{
+    if(err) console.log(err);
+    if(result.length===1){
+      res.json(result[0]);
+    }
+  })
+})
+io.on("connection",(socket)=>{
+  socket.on('updatesocket',(body)=>{
+    LoginService.updateSocket(body,socket);
+  });
+  socket.on('login',body=>{
+    LoginService.login(body,socket,io);
+  });
+  socket.on('logout',body=>{
+    LoginService.logout(body,socket,io);
+  })
+  socket.on('new',body=>{
+    NewService.newSVC(body,socket);
+  });
+  socket.on('search_query',body=>{
+    NewService.searchQuerySVC(body,socket);
+  });
+  socket.on('new_req_add',body=>{
+    NewService.newreqaddSVC(body,socket,io);
+  })
+  socket.on('cancel_request',body=>{
+    NewService.cancelSVC(body,socket,io);
+  })
+  socket.on('accept',body=>{
+    NewService.acceptSVC(body,socket,io);
+  });
+  socket.on('add_new',body=>{
+    NewService.addNewSVC(body,socket,io);
+  })
+  socket.on('sent_data',body=>{
+    ConnectionsService.msgSVC(body,io);
+  });
+  socket.on('start',body=>{
+    ConnectionsService.startSVC(body,socket);
+  });
+  socket.on('all_data',body=>{
+    ConnectionsService.allDataSVC(body,socket);
+  });
+  socket.on('delete_conn_start',body=>{
+    ConnectionsService.deleteConnSVC(body,socket,io);
+    })
+});
+server.listen(5000,()=>{
+  console.log("server listening at 5000")
+});
