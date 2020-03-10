@@ -72,14 +72,14 @@ export class Box extends Component {
               this.state.old_msg.map((value)=>{
                 if(parseInt(value.user_id)===parseInt(this.state.user_id)){
                   return (
-                    <ListGroup.Item style={{padding:'5px',paddingLeft:'15px'}} variant='info'>
+                    <ListGroup.Item style={{padding:'5px',paddingLeft:'15px'}} >
                       {value.msg}
                     </ListGroup.Item>
                   );
                 }else{
                   return(
-                    <ListGroup.Item style={{padding:'5px',paddingLeft:'15px'}} variant='danger'>
-                      {value.msg}
+                    <ListGroup.Item style={{padding:'5px',paddingLeft:'15px'}}>
+                      <span className="text-warning">{value.msg}</span>
                     </ListGroup.Item>
                   );
                 }

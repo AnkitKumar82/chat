@@ -14,6 +14,9 @@ export class Connections extends Component {
       user_id: props.user_id,
       list :[]
     }
+    if(parseInt(this.state.user_id) === 0){
+      window.location.href = '/Login';
+    }
   }
   componentDidMount(){
     this.socket.emit('start',{user_id:this.state.user_id});
@@ -62,9 +65,9 @@ export class Connections extends Component {
   handleDelete(value){
     this.setState({
       list:[...this.state.list.filter((val)=>{
-        return parseInt(val.user_id) !== parseInt(value.user_id); 
+        return parseInt(val.user_id) !== parseInt(value); 
       })]
-    })
+    });
     this.socket.emit('delete_conn_start',{user_id:this.state.user_id,other_id:value});
   }
   render() {
