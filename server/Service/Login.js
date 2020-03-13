@@ -1,17 +1,18 @@
 const con = require("../mysql");
 const updateSocket = function(body,socket){
   let user_id = body.user_id;
-  mysqlQuery = `update users set online='1',socket='${socket.id}' where user_id='${user_id}'`;
+  mysqlQuery = `update users set socket='${socket.id}' where user_id='${user_id}'`;
   con.query(mysqlQuery,(err,res)=>{
-    //io.emit() update status in db
     if(err) console.log(err);
   })
 }
 const logout = function(body,socket,io){
   let user_id = body.user_id;
-  let mysqlQuery = `update users set online='0' where user_id='${user_id}'`;
+  let mysqlQuery = `update users set online=0 where user_id='${user_id}'`;
+  console.log('user_id',user_id);
   con.query(mysqlQuery,(err,result)=>{
     if(err) console.log(err);
+    console.log(result,"result logout");
     mysqlQuery = `select user_one,user_two from connections where user_one=${user_id} or user_two=${user_id}`;
     con.query(mysqlQuery,(err,res)=>{
       if(err) console.log(err);
