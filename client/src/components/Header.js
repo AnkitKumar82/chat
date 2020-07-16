@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import Badge from 'react-bootstrap/Badge'
 import { withCookies } from 'react-cookie'
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
@@ -26,6 +25,11 @@ class Header extends Component {
         })
     }
     handleLogout(e){
+        document.cookie.split(";").forEach((c) => {
+            document.cookie = c
+              .replace(/^ +/, "")
+              .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+          });
         this.socket.emit('logout',{user_id:this.state.user_id});
         window.location.href = '/Login';
     }
@@ -55,6 +59,8 @@ class Header extends Component {
                     <Nav className="mr-auto">
                     <Nav.Link href="/About">About</Nav.Link>
                     </Nav>
+                    {this.props.cookies.get('username') &&
+                    <>
                     <Form inline>
                     <FormControl type="text" placeholder="Search" size="sm" className="mr-sm-2" onChange={(e)=>this.handleChange(e)}/>
                         <Button
@@ -69,6 +75,9 @@ class Header extends Component {
                         </Button>
                     </Form>
                     <Button style={{marginLeft:"20px"}} variant="danger" onClick={(e)=>{this.handleLogout(e)}}>{this.props.cookies.get('username')}</Button>
+                    </>
+                    }
+     
                 </Navbar.Collapse>
             </Navbar>
             <Collapse in={this.state.openModal}>

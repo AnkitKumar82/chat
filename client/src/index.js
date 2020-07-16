@@ -9,17 +9,14 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import {Router as ReactRouter} from 'react-router';
-
 import ErrorPage from './components/Error';
 import Login from './components/Login';
 import Header from './components/Header';
 import About from './components/About';
 import New from './components/New';
 import Connections from './components/Connections';
-import Button from 'react-bootstrap/Button';
 import io from "socket.io-client";
-const myServerAddr = 'http://localhost:5000';
+const myServerAddr = 'http://localhost:5000'; //only place to change backend address
 class App extends Component {
   constructor(props){
       super(props);

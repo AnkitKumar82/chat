@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { withCookies } from "react-cookie";
-import Request from 'request';
-const myServerAddr = 'http://localhost:5000';
 class Login extends Component {
   constructor(props){
     super(props);

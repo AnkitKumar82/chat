@@ -25,9 +25,6 @@ export class Box extends Component {
         containerId: `box_${this.state.other}`
       });
   }
-  createToastMessage(data){
-    console.log('toast to create');
-  }
   componentDidMount(){
     this.scrollToBottom();
     this.socket.emit('all_data',{user_id:this.state.user_id,other:this.state.other});
@@ -43,8 +40,6 @@ export class Box extends Component {
         this.setState({
           old_msg : [...this.state.old_msg, val]
         })
-      }else{
-        this.createToastMessage(val);
       }
     });
   }
@@ -78,8 +73,8 @@ export class Box extends Component {
                   );
                 }else{
                   return(
-                    <ListGroup.Item style={{padding:'5px',paddingLeft:'15px'}}>
-                      <span className="text-warning">{value.msg}</span>
+                    <ListGroup.Item style={{padding:'5px',paddingLeft:'15px',backgroundColor:"#FDEABF"}}>
+                      <span>{value.msg}</span>
                     </ListGroup.Item>
                   );
                 }

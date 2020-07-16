@@ -42,7 +42,7 @@ export class New extends Component {
     this.socket.on('accept_sent_req_res',(res)=>{
       this.setState({
         sentList : [...this.state.sentList.filter((val)=>{
-          return val.user_id != res.user_id;
+          return val.user_id !== res.user_id;
         })]
       });
     });
@@ -73,10 +73,10 @@ export class New extends Component {
   handleCancel(value){
     this.setState({
       sentList : [...this.state.sentList.filter((val)=>{
-        return val.user_id != value.user_id;
+        return val.user_id !== value.user_id;
       })],
       receiveList : [...this.state.receiveList.filter((val)=>{
-        return val.user_id != value.user_id;
+        return val.user_id !== value.user_id;
       })]
     });
     this.socket.emit('cancel_request',{user_id:this.state.user_id,data:value});
