@@ -37,6 +37,9 @@ io.on("connection",(socket)=>{
   socket.on('login',body=>{
     LoginService.login(body,socket,io);
   });
+  socket.on('new_user',body=>{
+    LoginService.newuser(body,socket,io);
+  });
   socket.on('logout',body=>{
     LoginService.logout(body,socket,io);
   })

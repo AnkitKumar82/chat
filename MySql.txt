@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     socket TEXT,
 )  ENGINE=INNODB;
-insert into users(username,password,online) values("kumar","ankit",0);
+insert into users(username,password,online,socket) values("kumar","ankit",0,scoket);
 
 //connections table
 CREATE TABLE IF NOT EXISTS connections (

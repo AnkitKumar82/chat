@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 import { withCookies } from "react-cookie";
 class Login extends Component {
   constructor(props){
@@ -8,18 +9,37 @@ class Login extends Component {
     this.socket = props.socket;
     this.state = {
       username: "",
-      password: ""
+      password: "",
+      errorMessage: "Username or password wrong!",
+      errorStatus:false
     }
+  }
+  componentDidMount(){
+    this.socket.on('login_success',(res)=>{
+      if(res.status===false){
+        this.setState({
+          errorStatus:true,
+          errorMessage:res.errorMessage
+        });
+      }else{
+        this.setState({
+          errorStatus:false
+        });
+        this.props.cookies.set('user_id',res.user_id);
+        this.props.cookies.set('username',res.username);
+        window.location.href = '/';
+      }
+    });
   }
   handleLogin(e) {
       e.preventDefault();
       this.socket.emit('login',{username:this.state.username , password:this.state.password});
-      this.socket.on('login_success',(res)=>{
-        this.props.cookies.set('user_id',res.user_id);
-        this.props.cookies.set('username',res.username);
-        window.location.href = '/';
-      });
+      
   }
+  handleNewUser(e) {
+    e.preventDefault();
+    this.socket.emit('new_user',{username:this.state.username , password:this.state.password});
+}
   handleUsernameChange(e){
     console.log(e.target.value);
     this.setState({username: e.target.value});
@@ -30,6 +50,10 @@ class Login extends Component {
   render() {
     return (
       <Form>
+        {this.state.errorStatus && (
+          <Alert variant="danger">{this.state.errorMessage}
+          </Alert >
+        )}
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Username</Form.Label>
           <Form.Control type="text" placeholder="Username" onChange={(e)=>this.handleUsernameChange(e)} />
@@ -41,6 +65,10 @@ class Login extends Component {
         </Form.Group>
         <Button variant="primary" onClick={(e)=>this.handleLogin(e)}>
           Login
+        </Button>
+        <>    </>
+        <Button variant="primary" onClick={(e)=>this.handleNewUser(e)}>
+          New User
         </Button>
       </Form>
     )
