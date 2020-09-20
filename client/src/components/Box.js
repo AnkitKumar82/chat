@@ -22,7 +22,7 @@ export class Box extends Component {
   }
   scrollToBottom() {
       animateScroll.scrollToBottom({
-        containerId: `box_${this.state.other}`
+        containerId: `box_${this.state.other.user_id}`
       });
   }
   componentDidMount(){
@@ -61,7 +61,7 @@ export class Box extends Component {
   render() {
     return (
       <div>
-        <ListGroup size="sm" id={`box_${this.state.other}`} style={{maxHeight:'300px',overflow:'auto'}}>
+        <ListGroup size="sm" id={`box_${this.state.other.user_id}`} style={{maxHeight:'300px',overflow:'auto'}}>
         {this.state.old_msg.length > 0 ?
             (
               this.state.old_msg.map((value)=>{

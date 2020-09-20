@@ -99,8 +99,6 @@ const newuser = function(body,socket,io){
   });
 }
 
-
-
 module.exports = {
   login,
   updateSocket,

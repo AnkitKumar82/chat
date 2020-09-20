@@ -15,9 +15,6 @@ io.origins('*:*') // for latest version
 app.use(express.urlencoded());
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());
-//app.use('/login', LoginRoutes);
-//app.use('/connections', ConnectionsRoutes);
-//app.use('/new',NewRoutes);
 
 app.post('/login',(req,res)=>{
   const username = req.body.username;
@@ -74,6 +71,6 @@ io.on("connection",(socket)=>{
     ConnectionsService.deleteConnSVC(body,socket,io);
     })
 });
-server.listen(5000,()=>{
-  console.log("server listening at 5000")
+server.listen(process.env.PORT || 5000,()=>{
+  console.log("server listening at ",process.env.PORT || 5000);
 });
