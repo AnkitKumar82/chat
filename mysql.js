@@ -18,7 +18,7 @@ Port: 3306*/
 // });
 
 var con = mysql.createConnection({
-  host: "https://remotemysql.com:3306",
+  host: "remotemysql.com",
   user: "jaYkACuYXy",
   password: "2k7TYXcf7y",
   database: "jaYkACuYXy"
