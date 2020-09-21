@@ -49,28 +49,30 @@ class Login extends Component {
   }
   render() {
     return (
-      <Form>
-        {this.state.errorStatus && (
-          <Alert variant="danger">{this.state.errorMessage}
-          </Alert >
-        )}
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Username</Form.Label>
-          <Form.Control type="text" placeholder="Username" onChange={(e)=>this.handleUsernameChange(e)} />
-        </Form.Group>
+      <div style={{margin:'auto',width:'60%'}}>
+        <Form style={{marginTop:"10%"}}>
+          {this.state.errorStatus && (
+            <Alert variant="danger">{this.state.errorMessage}
+            </Alert >
+          )}
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label >Username</Form.Label>
+            <Form.Control type="text" placeholder="Username" onChange={(e)=>this.handleUsernameChange(e)} />
+          </Form.Group>
 
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" onChange={(e)=>this.handlePasswordChange(e)} />
-        </Form.Group>
-        <Button variant="primary" onClick={(e)=>this.handleLogin(e)}>
-          Login
-        </Button>
-        <>    </>
-        <Button variant="primary" onClick={(e)=>this.handleNewUser(e)}>
-          New User
-        </Button>
-      </Form>
+          <Form.Group controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control type="password" placeholder="Password" onChange={(e)=>this.handlePasswordChange(e)} />
+          </Form.Group>
+          <Button variant="primary" onClick={(e)=>this.handleLogin(e)}>
+            Login
+          </Button>
+          <>    </>
+          <Button variant="primary" onClick={(e)=>this.handleNewUser(e)}>
+            New User
+          </Button>
+        </Form>
+      </div>
     )
   }
 }
