@@ -16,12 +16,16 @@ Port: 3306*/
 //   password: "Ankit@1234",
 //   database: "ankitpersonal"
 // });
-
+/*
+sql12.freemysqlhosting.net
+name and databaes:sql12366720 	sql12366720
+password: aYxW7ruxTV
+*/
 var con = mysql.createConnection({
-  host: "remotemysql.com",
-  user: "jaYkACuYXy",
-  password: "2k7TYXcf7y",
-  database: "jaYkACuYXy"
+  host: "sql12.freemysqlhosting.net",
+  user: "sql12366720",
+  password: "aYxW7ruxTV",
+  database: "sql12366720"
 });
 
 con.connect(function(err) {

@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL,
     online TINYINT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    socket TEXT,
+    socket TEXT
 )  ENGINE=INNODB;
 insert into users(username,password,online,socket) values("kumar","ankit",0,scoket);
 
