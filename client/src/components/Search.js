@@ -14,15 +14,7 @@ class Search extends Component {
   componentWillReceiveProps(props){
     this.setState({
       searchData: props.searchData
-    })
-  }
-  handleSendRequest(value){
-    this.setState({
-      searchData : this.state.searchData.filter((val)=>{
-        return parseInt(val.user_id) !== parseInt(value.user_id);
-      })
-    })
-    this.socket.emit('new_req_add',{user_id:this.state.user_id,data:value});
+    });
   }
   render() {
     return (
@@ -32,7 +24,7 @@ class Search extends Component {
           : this.state.searchData.map((value,index)=>{
             return(
             <ListGroup.Item style={{padding:'5px',paddingLeft:'15px'}}>{value.username}
-              <Button style={{float:'right'}} onClick={(e)=>this.handleSendRequest(value)} variant="success" size="sm">Send Request</Button>
+              <Button style={{float:'right'}} onClick={(e)=>this.props.handleSendRequest(value)} variant="success" size="sm">Send Request</Button>
             </ListGroup.Item>
             )
           })}

@@ -18,6 +18,7 @@ class Header extends Component {
             searchData : []
         }
         this.socket = props.socket;
+        this.handleSendRequest=this.handleSendRequest.bind(this);
     }
     handleChange(e){
         this.setState({
@@ -48,6 +49,15 @@ class Header extends Component {
                 })
             }
         }
+    }
+    
+    handleSendRequest(value){
+        this.setState({
+        searchData : this.state.searchData.filter((val)=>{
+            return parseInt(val.user_id) !== parseInt(value.user_id);
+        })
+        })
+        this.socket.emit('new_req_add',{user_id:this.state.user_id,data:value});
     }
     render() {
         return (
@@ -82,7 +92,7 @@ class Header extends Component {
             </Navbar>
             <Collapse in={this.state.openModal}>
                 <div id="search-aria">
-                    <Search socket={this.props.socket} searchData = {this.state.searchData}/>
+                    <Search handleSendRequest={this.handleSendRequest} socket={this.props.socket} searchData={this.state.searchData}/>
                 </div>
             </Collapse>
         </div>
