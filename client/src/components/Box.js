@@ -65,15 +65,15 @@ export class Box extends Component {
         {this.state.old_msg.length > 0 ?
             (
               this.state.old_msg.map((value)=>{
-                if(parseInt(value.user_id)===parseInt(this.state.user_id)){
+                if(parseInt(value.user_id)===parseInt(this.state.other.user_id)){
                   return (
-                    <ListGroup.Item style={{padding:'5px',paddingLeft:'15px'}} >
+                    <ListGroup.Item style={{padding:'5px',paddingLeft:'15px',backgroundColor:"#f0ad4e"}}/* here make some changes for other user*/  >
                       {value.msg}
                     </ListGroup.Item>
                   );
                 }else{
                   return(
-                    <ListGroup.Item style={{padding:'5px',paddingLeft:'15px',backgroundColor:"#FDEABF"}}>
+                    <ListGroup.Item style={{padding:'5px',paddingLeft:'15px'}}>
                       <span>{value.msg}</span>
                     </ListGroup.Item>
                   );

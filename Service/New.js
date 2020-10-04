@@ -1,7 +1,8 @@
 const con = require("../mysql");
-
-const newSVC = function(body,socket){
-  let user_id = body.user_id ;
+const jwtVerify = require("./JWT").jwtVerify;
+const newSVC = async function(body,socket){
+  let user_id = await jwtVerify(body.user_id,socket);
+  if(user_id === -1) return;
   let mysqlQuery = `select connection,user_one,user_two from connections where (user_one='${user_id}' or user_two='${user_id}') and status='0'`;
   con.query(mysqlQuery,(err,newcon)=>{
       if(err) console.log(err);
@@ -23,8 +24,9 @@ const newSVC = function(body,socket){
   }); 
 }
 
-const addNewSVC = function(body,socket,io){
-  let user_id = parseInt(body.user_id);
+const addNewSVC = async function(body,socket,io){
+  let user_id =await jwtVerify(body.user_id,socket);
+  if(user_id === -1) return;
   let new_id = parseInt(body.data.user_id);
   let mysqlQuery = `insert into connections(user_one,user_two,status) values('${user_id}','${new_id}','0');`;
   con.query(mysqlQuery,(err,inserted)=>{
@@ -40,8 +42,9 @@ const addNewSVC = function(body,socket,io){
   });
 
 }
-const acceptSVC = function(body,socket,io){
-  let user_id = parseInt(body.user_id);
+const acceptSVC = async function(body,socket,io){
+  let user_id =await jwtVerify(body.user_id,socket);
+  if(user_id === -1) return;
   let new_id = parseInt(body.data.user_id);
   let mysqlQuery = `update connections set status=1 where (user_one='${new_id}' and user_two='${user_id}');`;
   con.query(mysqlQuery,(err,updated)=>{
@@ -60,8 +63,9 @@ const acceptSVC = function(body,socket,io){
       });
 }
 
-const cancelSVC = function(body,socket,io){
-  let user_id = parseInt(body.user_id);
+const cancelSVC = async function(body,socket,io){
+  let user_id =await jwtVerify(body.user_id,socket);
+  if(user_id === -1) return;
   let new_id = parseInt(body.data.user_id);
   let user_list = [user_id,new_id];
   let mysqlQuery = `delete from connections where (user_one in (${user_list}) and user_two in (${user_list}));`;
@@ -74,8 +78,10 @@ const cancelSVC = function(body,socket,io){
           })
         });
 }
-const searchQuerySVC = function(body,socket){
-  let user_id = parseInt(body.user_id);
+const searchQuerySVC = async function(body,socket){
+  let user_id =await jwtVerify(body.user_id,socket);
+  if(user_id === -1) return;
+
   let searchQuery = body.searchQuery;
   let mysqlQuery = `select user_id,username from users where username like '%${searchQuery}%'`;
   con.query(mysqlQuery,(err,res)=>{
@@ -97,8 +103,9 @@ const searchQuerySVC = function(body,socket){
     })
   })
 }
-const newreqaddSVC = function(body,socket,io){
-  const user_id = body.user_id;
+const newreqaddSVC = async function(body,socket,io){
+  let user_id = await jwtVerify(body.user_id,socket);
+  if(user_id === -1) return;
   const new_id = body.data.user_id;
   console.log("user ",user_id);
   let mysqlQuery = `insert into connections(user_one,user_two,status) values('${user_id}','${new_id}','0')`;

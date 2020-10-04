@@ -16,18 +16,26 @@ import About from './components/About';
 import New from './components/New';
 import Connections from './components/Connections';
 import io from "socket.io-client";
-// const myServerAddr = 'http://localhost:5000'; //only place to change backend address
+const myServerAddr = 'http://localhost:5000'; //only place to change backend address
 class App extends Component {
   constructor(props){
       super(props);
       this.state = {
-          user_id : this.props.cookies.get('user_id') || 0,
-          socket:io('/'),
+          user_id : this.props.cookies.get('user_id') || "", //user id is actually a JWTtoken with user_id
+          socket:io(myServerAddr),
           username: this.props.cookies.get('username') || '',
       };
   }
   componentDidMount(){
-      this.state.socket.emit('updatesocket',{user_id:this.state.user_id});
+        this.state.socket.emit('updatesocket',{user_id:this.state.user_id});
+        this.state.socket.on('error_user_id',(value)=>{
+            document.cookie.split(";").forEach((c) => {
+                document.cookie = c
+                    .replace(/^ +/, "")
+                    .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+                });
+            window.location.href = '/Login';
+        });
   }
   render(){
       return (

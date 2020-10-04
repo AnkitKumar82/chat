@@ -11,6 +11,7 @@
     "moment-timezone": "^0.5.28",
     "react": "^16.13.0",
     "react-bootstrap": "^1.0.0-beta.16",
+    "react-burger-menu": "^2.7.1",
     "react-cookie": "^4.0.3",
     "react-dom": "^16.13.0",
     "react-moment": "^0.9.7",

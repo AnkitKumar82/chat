@@ -1,7 +1,12 @@
 const con = require("../mysql");
-
-const startSVC = function(body,socket){
-  let user_id = body.user_id;
+const jwtVerify = require("./JWT").jwtVerify;
+const startSVC = async function(body,socket){
+  try{
+    var user_id = await jwtVerify(body.user_id,socket);
+  }catch(err){
+    console.log(err);
+    return;
+  }
   let mysqlQuery = `select * from connections where (user_one='${user_id}' or user_two='${user_id}') and status='1'`;
   con.query(mysqlQuery,(err,result)=>{
       if(err) console.log(err);
@@ -23,8 +28,9 @@ const startSVC = function(body,socket){
       }
   }); 
 }
-const msgSVC = function(body,io){
-  let user_id = body.user_id;
+const msgSVC = async function(body,socket,io){
+  let user_id = await jwtVerify(body.user_id,socket);
+  if(user_id === -1) return;
   let other_id = body.other.user_id;
   let mysqlQuery = `select * from users where user_id='${other_id}'`;
   con.query(mysqlQuery,(err,result)=>{
@@ -40,8 +46,9 @@ const msgSVC = function(body,io){
         });
       });
 }
-const allDataSVC = function(body,socket){
-  let user_id = body.user_id;
+const allDataSVC = async function(body,socket){
+  let user_id = await jwtVerify(body.user_id,socket);
+  if(user_id === -1) return;
   let other_id = body.other.user_id;
   let user_list = [user_id,other_id];
   let mysqlQuery = `select * from data where user_one in (${user_list}) and user_two in (${user_list})`;
@@ -57,8 +64,9 @@ const allDataSVC = function(body,socket){
     socket.emit('all_data_res',{old_msg:res,user_id:other_id});
   })
 }
-const deleteConnSVC = function(body,socket,io){
-  let user_id = body.user_id;
+const deleteConnSVC = async function(body,socket,io){
+  let user_id = await jwtVerify(body.user_id,socket);
+  if(user_id === -1) return;
   let other_id = body.other_id;
   let user_list = [user_id,other_id];
   let mysqlQuery = `select * from users where user_id=${other_id}`;
