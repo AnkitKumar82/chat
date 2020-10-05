@@ -16,13 +16,13 @@ import About from './components/About';
 import New from './components/New';
 import Connections from './components/Connections';
 import io from "socket.io-client";
-const myServerAddr = 'http://localhost:5000'; //only place to change backend address
+// const myServerAddr = 'http://localhost:5000'; //only place to change backend address
 class App extends Component {
   constructor(props){
       super(props);
       this.state = {
           user_id : this.props.cookies.get('user_id') || "", //user id is actually a JWTtoken with user_id
-          socket:io(myServerAddr),
+          socket:io('/'),
           username: this.props.cookies.get('username') || '',
       };
   }
