@@ -6,17 +6,17 @@ const path = require('path');
 const ConnectionsService = require('./Service/Connections.js');
 const NewService = require('./Service/New.js');
 const LoginService = require('./Service/Login.js');
+
 const server = require('http').Server(app);
-const io = require('socket.io')(server);
+const io = require('socket.io')(server,{
+	cookie: false
+  });
 var cors = require('cors');
-const cookieParser = require("cookie-parser");
-app.use(cookieParser());
 app.use(cors());
 io.origins('*:*') // for latest version
 app.use(express.urlencoded());
 // Parse JSON bodies (as sent by API clients)
 app.use(express.json());
-
 
 //Serve static files in production mode
 if(process.env.NODE_ENV === "production"){
