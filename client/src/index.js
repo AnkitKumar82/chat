@@ -21,7 +21,7 @@ class App extends Component {
   constructor(props){
       super(props);
       this.state = {
-          user_id : this.props.cookies.get('user_id') || "", //user id is actually a JWTtoken with user_id
+          user_id : this.props.cookies.get('user_id') || "random", //user id is actually a JWTtoken with user_id
           socket:io('/'),
           username: this.props.cookies.get('username') || '',
       };
