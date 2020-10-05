@@ -20,7 +20,7 @@ const logout = async function(body,socket,io){
 	let user_id = await jwtVerify(body.user_id,socket);
   	if(user_id === -1) return;
 	let mysqlQuery = `update users set online=0 where user_id='${user_id}'`;
-	console.log('user_id',user_id);
+	console.log('user_id received',user_id);
 	con.query(mysqlQuery,(err,result)=>{
 		if(err) console.log(err);
 		console.log(result,"result logout");
@@ -37,7 +37,6 @@ const logout = async function(body,socket,io){
 					if(err) console.log(err);
 					if(resultSockets.length>0){
 						resultSockets.forEach(element => {
-							user_id = getToken(user_id);
 							io.to(element.socket).emit('update_status',{online:0,user_id:user_id});
 						})
 					}
