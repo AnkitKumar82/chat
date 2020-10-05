@@ -26,12 +26,12 @@ class Header extends Component {
         })
     }
     handleLogout(e){
+        this.socket.emit('logout',{user_id:this.state.user_id});
         document.cookie.split(";").forEach((c) => {
             document.cookie = c
               .replace(/^ +/, "")
               .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
           });
-        this.socket.emit('logout',{user_id:this.state.user_id});
         let windowLocationArray = window.location.href.split('/');
         if(windowLocationArray[windowLocationArray.length - 1] !== "Login"){
             window.location.href = '/Login';
