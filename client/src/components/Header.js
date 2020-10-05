@@ -32,7 +32,10 @@ class Header extends Component {
               .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
           });
         this.socket.emit('logout',{user_id:this.state.user_id});
-        window.location.href = '/Login';
+        let windowLocationArray = window.location.href.split("/");
+        if(windowLocationArray[windowLocationArray.length - 1] !== "Login"){
+            window.location.href = '/Login';
+        }
     }
     handleOpenModal(e){
         e.preventDefault();

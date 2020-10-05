@@ -34,7 +34,10 @@ class App extends Component {
                     .replace(/^ +/, "")
                     .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
                 });
-            window.location.href = '/Login';
+                let windowLocationArray = window.location.href.split("/");
+                if(windowLocationArray[windowLocationArray.length - 1] !== "Login"){
+                    window.location.href = '/Login';
+                }
         });
   }
   render(){
