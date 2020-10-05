@@ -28,7 +28,7 @@ class Login extends Component {
         console.log("token generated",res.user_id);
         this.props.cookies.set('user_id',res.user_id);
         this.props.cookies.set('username',res.username);
-        window.location.href = '/';
+        this.props.handleTokenVerificationSuccess();
       }
     });
   }

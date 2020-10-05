@@ -21,10 +21,19 @@ class App extends Component {
   constructor(props){
       super(props);
       this.state = {
-          user_id : this.props.cookies.get('user_id') || "random", //user id is actually a JWTtoken with user_id
+          user_id : this.props.cookies.get('user_id') || "", //user id is actually a JWTtoken with user_id
           socket:io('/'),
           username: this.props.cookies.get('username') || '',
+          tokenVerified : false    
       };
+      document.cookie.split(";").forEach((c) => {
+        document.cookie = c
+            .replace(/^ +/, "")
+            .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+        });
+        //clearing cookies on page load
+      this.handleTokenVerificationSuccess = this.handleTokenVerificationSuccess.bind(this);
+      this.handleTokenVerificationFailure = this.handleTokenVerificationFailure.bind(this);
   }
   componentDidMount(){
         this.state.socket.emit('updatesocket',{user_id:this.state.user_id});
@@ -34,33 +43,41 @@ class App extends Component {
                     .replace(/^ +/, "")
                     .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
                 });
-                let windowLocationArray = window.location.href.split("/");
-                if(windowLocationArray[windowLocationArray.length - 1] !== "Login"){
-                    window.location.href = '/Login';
-                }
+                this.handleTokenVerificationFailure();
         });
+  }
+  handleTokenVerificationSuccess(){
+    this.setState({
+        tokenVerified : true    
+    });
+  }
+  handleTokenVerificationFailure(){
+    this.setState({
+        tokenVerified : false    
+    });
   }
   render(){
       return (
           <div style={{fontFamily:"Arial"}}>
-              <Header socket={this.state.socket}/>  
+              <Header handleTokenVerificationFailure={this.handleTokenVerificationFailure} socket={this.state.socket}/>  
               <Router >
                   <Switch>
                       <Route exact path="/" component={()=>{
-                          return(    
-                          <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
-                                  <Connections username={this.state.username} user_id={this.state.user_id} socket={this.state.socket}/>
-                                  <New username={this.state.username} user_id={this.state.user_id} socket={this.state.socket} style={{width:'300px'}}/>
-                              </div>
-                          )
+                          if(this.state.tokenVerified===false){
+                              return (
+                                <Login socket={this.state.socket} handleTokenVerificationSuccess={this.handleTokenVerificationSuccess}/>
+                                )
+                          }else{
+                          return(
+                            <div style={{display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
+                                    <Connections username={this.state.username} user_id={this.state.user_id} socket={this.state.socket}/>
+                                    <New username={this.state.username} user_id={this.state.user_id} socket={this.state.socket} style={{width:'300px'}}/>
+                                </div>
+                            )
+                          }
                       }} />
                       <Route exact path="/Error" component={ErrorPage}/>
                       <Route exact path="/About" component={About}/>
-                      <Route exact path="/Login" component={()=>{
-                          return(
-                              <Login socket={this.state.socket}/>
-                          )
-                      }} />
                   </Switch> 
               </Router>  
           </div>
